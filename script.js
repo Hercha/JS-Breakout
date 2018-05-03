@@ -21,13 +21,13 @@ ctx.closePath();*/
 
 
 
-var x = canvas.width / 2;
-var y = canvas.height - 30;
+var x = (canvas.width/2)+Math.floor(Math.random()*21)-10;
+var y = (canvas.height - 30)+Math.floor(Math.random()*21)-10;
 
 var dx = 2.5;
 var dy = -2.5;
 
-var ballRadius = 10;
+var ballRadius = 20;
 
 var paddleHeight = 10;
 var paddleWidth = 75;
@@ -49,6 +49,9 @@ var lives = 3;
 var level = 1;
 var maxLevel = 5;
 var paused = false;
+
+var ball = new Image();
+ball.src = 'ball.png';
 
 var bricks = [];
 initBricks();
@@ -103,11 +106,12 @@ function keyUpHandler(e) {
 }
 
 function drawBall() {
-    ctx.beginPath();
-    ctx.arc(x, y, ballRadius, 0, Math.PI*2);
-    ctx.fillStyle = "#0095DD";
-    ctx.fill();
-    ctx.closePath();
+    ctx.drawImage(ball, x, y, ballRadius, ballRadius);
+    //ctx.beginPath();
+    //ctx.arc(x, y, ballRadius, 0, Math.PI*2);
+    //ctx.fillStyle = "#0095DD";
+    //ctx.fill();
+    //ctx.closePath();
 }
 
 function drawPaddle() {
@@ -157,8 +161,8 @@ function collisionDetection() {
                                 dx =7;
                                 dy = -7;
                             }
-                            x = canvas.width/2;
-                            y = canvas.height-30;
+                            x = (canvas.width/2)+Math.floor(Math.random()*21)-10;
+                            y = (canvas.height-30)+Math.floor(Math.random()*21)-10;
                             paddleX = (canvas.width-paddleWidth)/2;
                             paused = true;
                             ctx.beginPath();
@@ -223,8 +227,8 @@ function draw() {
                 alert("GAME OVER");
                 document.location.reload();
             } else {
-                x = canvas.width / 2;
-                y = canvas.height - 30;
+                x = (canvas.width / 2)+Math.floor(Math.random()*21)-10;
+                y = (canvas.height - 30)+Math.floor(Math.random()*21)-10;
                 paddleX = (canvas.width - paddleWidth) / 2;
             }
         }
