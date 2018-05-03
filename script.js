@@ -46,16 +46,19 @@ var brickOffsetLeft = 30;
 
 var score = 0;
 var lives = 3;
+var level = 1;
+var maxLevel = 5;
 
 var bricks = [];
-for (c = 0; c < brickColumnCount; c++) {
-    bricks[c] = [];
-    for (r = 0; r < brickRowCount; r++) {
-        bricks[c][r] = {x: 0, y: 0, status: 1};
+initBricks();
+function initBricks() {
+    for (c = 0; c < brickColumnCount; c++) {
+        bricks[c] = [];
+        for (r = 0; r < brickRowCount; r++) {
+            bricks[c][r] = {x: 0, y: 0, status: 1};
+        }
     }
 }
-
-
 
 document.addEventListener("keydown", keyDownHandler);
 document.addEventListener("keyup", keyUpHandler);
@@ -126,8 +129,14 @@ function collisionDetection() {
                     b.status = 0;
                     score++;
                     if (score === brickRowCount * brickColumnCount) {
-                        alert("YOU WIN, CONGRATULATIONS!");
-                        document.location.reload();
+                        if(level === maxLevel) {
+                            alert("YOU WIN, CONGRATULATIONS!");
+                            document.location.reload();
+                        } else {
+                            level++;
+                            initBricks();
+                            score = 0;
+                        }
                     }
                 }   
             }
@@ -147,6 +156,12 @@ function drawLifes() {
     ctx.fillText("Lives: "+lives, canvas.width - 65, 20);
 }
 
+function drawLevel() {
+    ctx.font = "16px Arial";
+    ctx.fillStyle = "#0095DD";
+    ctx.fillText("Level: "+level, 210, 20);
+}
+
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawBricks();
@@ -154,6 +169,7 @@ function draw() {
     drawPaddle();
     drawScore();
     drawLifes();
+    drawLevel();
     collisionDetection();
     
 /*    if (y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
@@ -173,8 +189,6 @@ function draw() {
             } else {
                 x = canvas.width / 2;
                 y = canvas.height - 30;
-                dx = 2;
-                dy = -2;
                 paddleX = (canvas.width - paddleWidth) / 2;
             }
         }
