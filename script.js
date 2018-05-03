@@ -48,6 +48,7 @@ var score = 0;
 var lives = 3;
 var level = 1;
 var maxLevel = 5;
+var paused = false;
 
 var bricks = [];
 initBricks();
@@ -134,8 +135,43 @@ function collisionDetection() {
                             document.location.reload();
                         } else {
                             level++;
+                            brickRowCount++;
                             initBricks();
                             score = 0;
+//                            dx += 1;
+//                            dy = -dy;
+//                            dy -= 1;
+                            if(level == 1) {
+                                dx = 3;
+                                dy = -3;
+                            } else if (level == 2) {
+                                dx = 4;
+                                dy = 4;
+                            } else if (level == 3) {
+                                dx = 5;
+                                dy = -5;
+                            } else if ( level == 4) {
+                                dx = 6;
+                                dy = -6;
+                            } else {
+                                dx =7;
+                                dy = -7;
+                            }
+                            x = canvas.width/2;
+                            y = canvas.height-30;
+                            paddleX = (canvas.width-paddleWidth)/2;
+                            paused = true;
+                            ctx.beginPath();
+                            ctx.rect(0, 0, canvas.width, canvas.height);
+                            ctx.fillStyle = '#0095DD';
+                            ctx.fill();
+                            ctx.font = "16px Arial";
+                            ctx.fillStyle = "#FFFFFF";
+                            ctx.fillText("Level " + (level - 1) + " completed, starting next level...", 110, 150);
+                            setTimeout(function() {
+                                paused = false;
+                                draw();
+                            }, 3000);
                         }
                     }
                 }   
@@ -208,7 +244,9 @@ function draw() {
     
     x += dx;
     y += dy;
-    requestAnimationFrame(draw);
+    if(!paused) {
+        requestAnimationFrame(draw);  
+    }
 }
 
 document.addEventListener("mousemove", mouseMoveHandler);
